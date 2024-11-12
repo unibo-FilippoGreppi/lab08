@@ -43,7 +43,6 @@ public final class LaunchApp {
         IllegalArgumentException {
         final var model = new DrawNumberImpl();
         final DrawNumberController app = new DrawNumberControllerImpl(model);
-
         for (final var className : CLASSES) {
             final var viewClass = Class.forName(className);
             var constructor = viewClass.getConstructor();
