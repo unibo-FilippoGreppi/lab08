@@ -90,6 +90,18 @@ class TestDeathNote {
         assertEquals(deathCause2, deathNote.getDeathCause(name4));
     }
 
+    @Test
+    void testDieWithDetails() {
+        String deathCause = "heart attack";
+        try {
+            deathNote.writeDeathCause(deathCause);
+            Assertions.fail("Death cause has been written, but should have thrown an exception");
+
+        } catch(IllegalStateException e) {
+            assertNotNull(e.getMessage());// Non-null message
+            assertFalse(e.getMessage().isBlank()); // Not a blank or empty message        
+        }
+    }
 
 
 }
