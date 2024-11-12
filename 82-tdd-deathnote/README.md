@@ -23,7 +23,7 @@ Use the *Test-Driven Development (TDD)* methodology to develop the following.
       * set the cause of death to "karting accident"
       * verify that the cause of death has been set correctly (returned true, and the cause is indeed "karting accident")
       * sleep for 100ms
-      * try to change the cause of death 
+      * try to change the cause of death
       * verify that the cause of death has not been changed
    5. Only if the cause of death is written within the next 6 seconds and 40 milliseconds of writing the death's details, it will happen.
       * check that writing the death details before writing a name throws the correct exception
@@ -40,5 +40,6 @@ Use the *Test-Driven Development (TDD)* methodology to develop the following.
 6. Modify the implementation of the `DeathNote` in such a way that all tests work
 
 **Important notes**:
+
 * the current time measured as seconds since the Unix epoch is available as `System.currentTimeMillis()`.
 * the execution of a program can be paused for a given number of milliseconds using `Thread.sleep(long millis)`.

@@ -5,19 +5,19 @@ import it.unibo.deathnote.api.DeathNote;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Assertions;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TestDeathNote {
+    private static final long SHORT_TIME = 100;
+    private static final long LONG_TIME = 6100;
     private DeathNoteImplementation deathNote;
 
     @BeforeEach
     void setUp() {
-        deathNote = new DeathNoteImplementation();
+        this.deathNote = new DeathNoteImplementation();
     }
 
     @Test
@@ -25,7 +25,7 @@ class TestDeathNote {
         try {
             for (int i = -1; i <= DeathNote.RULES.size() + 1; i++) {
                 deathNote.getRule(i);
-                Assertions.fail("Getting rule , but should have thrown an exception");
+                Assertions.fail("Getting rule, but should have thrown an exception");
             }
         } catch(IllegalArgumentException e) {
             assertNotNull(e.getMessage());// Non-null message
@@ -34,7 +34,7 @@ class TestDeathNote {
     }
 
     @Test
-    void voidDeathNoteRulesNotEmpty() {
+    void DeathNoteRulesNotEmpty() {
         for (var rule: DeathNote.RULES) {
             assertFalse(rule.isBlank());
         }
@@ -48,60 +48,70 @@ class TestDeathNote {
         deathNote.writeName(name);
         assertTrue(deathNote.isNameWritten(name));
         assertFalse(deathNote.isNameWritten(name1));
-        deathNote.writeName("");
+        try {
+            deathNote.writeName("");
+            Assertions.fail("Writing an empty name, but should have thrown an exception");
+        } catch (NullPointerException e) {
+            assertNotNull(e.getMessage());
+            assertFalse(e.getMessage().isBlank());
+        }
         assertFalse(deathNote.isNameWritten(""));
     }
 
     @Test
-    void testDieWithinTime() throws IllegalStateException, InterruptedException {
+    void testDieWithinTime() throws InterruptedException {
         String deathCause = "heart attack";
         try {
             deathNote.writeDeathCause(deathCause);
             Assertions.fail("Death cause has been written, but should have thrown an exception");
-
         } catch(IllegalStateException e) {
             assertNotNull(e.getMessage());// Non-null message
             assertFalse(e.getMessage().isBlank()); // Not a blank or empty message        
-        }
-
-        final String name3 = "Lidia";
-        assertFalse(deathNote.isNameWritten(name3));
-        deathNote.writeName(name3);
-        assertTrue(deathNote.isNameWritten(name3));
-        assertTrue(deathNote.getDeathCause(name3).isBlank());
+        } 
+        final String name = "Lidia";
+        assertFalse(deathNote.isNameWritten(name));
+        deathNote.writeName(name);
+        assertTrue(deathNote.isNameWritten(name));
+        assertEquals("heart attack", deathNote.getDeathCause(name));
         deathNote.writeDeathCause(deathCause);
-        assertEquals(deathCause.toLowerCase(), deathNote.getDeathCause(name3).toLowerCase());
-        final String name4 = "Mathilda";
-        assertFalse(deathNote.isNameWritten(name4));
-        deathNote.writeName(name4);
-        assertTrue(deathNote.isNameWritten(name4));
-        assertTrue(deathNote.getDeathCause(name3).isBlank());
+        assertEquals(deathCause.toLowerCase(), deathNote.getDeathCause(name).toLowerCase());
+        final String name2 = "Mathilda";
+        assertFalse(deathNote.isNameWritten(name2));
+        deathNote.writeName(name2);
+        assertTrue(deathNote.isNameWritten(name2));
+        assertEquals("heart attack", deathNote.getDeathCause(name));
         String deathCause2 = "karting accident";
         assertTrue(deathNote.writeDeathCause(deathCause2));       
-        assertEquals(deathCause2, deathNote.getDeathCause(name4));
-        Thread.sleep(100);
-        try {
-            deathNote.writeDeathCause("Just another death cause");
-            Assertions.fail("Death cause has been changed, but should have thrown an exception");
-        } catch(IllegalStateException e) {
-            assertNotNull(e.getMessage());// Non-null message
-            assertFalse(e.getMessage().isBlank()); // Not a blank or empty message  
-        }
-        assertEquals(deathCause2, deathNote.getDeathCause(name4));
+        assertEquals(deathCause2, deathNote.getDeathCause(name2));
+        Thread.sleep(SHORT_TIME);
+        assertFalse(deathNote.writeDeathCause("Just another death cause"));
+        assertEquals(deathCause2, deathNote.getDeathCause(name2));
     }
 
     @Test
-    void testDieWithDetails() {
-        String deathCause = "heart attack";
+    void testDieWithDetails() throws InterruptedException {
+        String deathDetails = "ran for too long";
         try {
-            deathNote.writeDeathCause(deathCause);
+            deathNote.writeDetails(deathDetails);
             Assertions.fail("Death cause has been written, but should have thrown an exception");
-
         } catch(IllegalStateException e) {
             assertNotNull(e.getMessage());// Non-null message
             assertFalse(e.getMessage().isBlank()); // Not a blank or empty message        
         }
+        final String name = "Pedro";
+        assertFalse(deathNote.isNameWritten(name));
+        deathNote.writeName(name);
+        assertTrue(deathNote.isNameWritten(name));
+        assertEquals("", deathNote.getDeathDetails(name));
+        assertTrue(deathNote.writeDetails(deathDetails));
+        assertEquals(deathDetails, deathNote.getDeathDetails(name));
+        final String name2 = "Colin";
+        assertFalse(deathNote.isNameWritten(name2));
+        deathNote.writeName(name2);
+        assertTrue(deathNote.isNameWritten(name2));
+        Thread.sleep(LONG_TIME);
+        String deathDetails2 = "just another type of details";
+        assertFalse(deathNote.writeDetails(deathDetails2));
+        assertEquals("", deathNote.getDeathDetails(name2));
     }
-
-
 }

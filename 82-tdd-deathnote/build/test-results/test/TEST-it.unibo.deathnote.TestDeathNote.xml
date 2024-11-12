@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="it.unibo.deathnote.TestDeathNote" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-11-11T11:40:35" hostname="Filos-MacBook-Air.local" time="0.009">
+<testsuite name="it.unibo.deathnote.TestDeathNote" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-11-12T17:25:26" hostname="FILO-STUDIO" time="6.254">
   <properties/>
-  <testcase name="testDeathNoteRules()" classname="it.unibo.deathnote.TestDeathNote" time="0.009"/>
+  <testcase name="testDeathNoteRules()" classname="it.unibo.deathnote.TestDeathNote" time="0.023"/>
+  <testcase name="testDieWithinTime()" classname="it.unibo.deathnote.TestDeathNote" time="0.118"/>
+  <testcase name="testDeath()" classname="it.unibo.deathnote.TestDeathNote" time="0.001"/>
+  <testcase name="testDieWithDetails()" classname="it.unibo.deathnote.TestDeathNote" time="6.108"/>
+  <testcase name="DeathNoteRulesNotEmpty()" classname="it.unibo.deathnote.TestDeathNote" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
